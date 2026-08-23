@@ -1,0 +1,19 @@
+# Postgres local para desarrollo. Levantar con: docker compose up -d
+# (requiere Docker Desktop corriendo). El deploy real (API + volumen de uploads)
+# se define en Railway, no acá — este compose es solo para la base de datos local.
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: solares-donato-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: solaresdedonato
+      POSTGRES_USER: solares_admin
+      POSTGRES_PASSWORD: zv6rLy0bSZHCv9chdgI6
+    ports:
+      - "5432:5432"
+    volumes:
+      - solares_donato_pg_data:/var/lib/postgresql/data
+
+volumes:
+  solares_donato_pg_data:

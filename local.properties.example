@@ -1,0 +1,16 @@
+# Copiar a `local.properties` (gitignoreado) para desarrollo local.
+# `application.properties` lo importa vía `spring.config.import=optional:file:./local.properties`,
+# así que estos valores pisan los defaults salvo que ya los tengas seteados como env var.
+#
+# Nada de esto se sube al repo: es exactamente lo que reemplaza al viejo `setx` del bootstrap
+# (que no aplicaba a la terminal ya abierta) y a los profiles de application-local.properties.
+
+spring.datasource.username=solares_admin
+spring.datasource.password=zv6rLy0bSZHCv9chdgI6
+
+# Cualquier string sirve en local; en Railway va por env var JWT_SECRET con un valor real.
+jwt.secret=clave-de-desarrollo-local-cambiar-en-produccion
+
+# Google Drive (ver plan de ingesta) — completar cuando exista el service account.
+# app.drive.credentials-json={"type":"service_account", ...}
+# app.drive.folder-id=
