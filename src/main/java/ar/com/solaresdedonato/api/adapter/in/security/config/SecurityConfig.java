@@ -56,6 +56,8 @@ public class SecurityConfig {
                         // Altas públicas sin JWT (formularios de la web)
                         .requestMatchers(HttpMethod.POST, "/v1/consulta-contacto").permitAll()
                         .requestMatchers(HttpMethod.POST, "/v1/registro-broker").permitAll()
+                        // Carrusel de inicio del sitio público (ver ContenidoController.listarHero)
+                        .requestMatchers(HttpMethod.GET, "/v1/contenido/hero").permitAll()
                         // /v1/desarrollo/admin/** va antes: es más específico que el wildcard público de abajo
                         .requestMatchers(HttpMethod.GET, "/v1/desarrollo/admin/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/v1/desarrollo", "/v1/desarrollo/*").permitAll()

@@ -30,6 +30,16 @@ public class ContenidoMediaRepository implements ContenidoMediaRepositoryPort {
     }
 
     @Override
+    public List<ContenidoMedia> findHeroHabilitadas() {
+        return jpaRepository.findHeroHabilitadas().stream().map(mapper::toDomain).toList();
+    }
+
+    @Override
+    public long countHeroHabilitadas() {
+        return jpaRepository.countByCategoriaAndEnableTrue("hero");
+    }
+
+    @Override
     public PageResult<ContenidoMedia> findByFiltro(Long desarrolloId, String tipo, String categoria, PageQuery pageQuery) {
         Page<ContenidoMediaEntity> page = jpaRepository.findByFiltro(
                 desarrolloId, tipo, categoria, PageRequest.of(pageQuery.getPage(), pageQuery.getSize()));

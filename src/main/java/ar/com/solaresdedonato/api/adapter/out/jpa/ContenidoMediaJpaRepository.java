@@ -25,9 +25,19 @@ public interface ContenidoMediaJpaRepository extends JpaRepository<ContenidoMedi
               AND (:desarrolloId IS NULL OR c.desarrollo.id = :desarrolloId)
               AND (:tipo IS NULL OR c.tipo = :tipo)
               AND (:categoria IS NULL OR c.categoria = :categoria)
+            ORDER BY c.orden ASC, c.id ASC
             """)
     Page<ContenidoMediaEntity> findByFiltro(@Param("desarrolloId") Long desarrolloId, @Param("tipo") String tipo,
                                              @Param("categoria") String categoria, Pageable pageable);
+
+    @Query("""
+            SELECT c FROM ContenidoMediaEntity c
+            WHERE c.enable = true AND c.categoria = 'hero'
+            ORDER BY c.orden ASC, c.id ASC
+            """)
+    List<ContenidoMediaEntity> findHeroHabilitadas();
+
+    long countByCategoriaAndEnableTrue(String categoria);
 
     @Query("SELECT c FROM ContenidoMediaEntity c LEFT JOIN FETCH c.desarrollo WHERE c.id = :id AND c.enable = true")
     Optional<ContenidoMediaEntity> findByIdAndEnableTrue(@Param("id") Long id);

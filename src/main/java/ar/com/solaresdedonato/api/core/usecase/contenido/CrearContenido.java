@@ -35,6 +35,8 @@ public class CrearContenido {
     private final ValidadorArchivoImagen validadorArchivoImagen;
 
     public ContenidoMedia execute(ContenidoMediaCommand command, StampCommand stamp) {
+        ContenidoMediaDomainService.validarDesarrolloRequerido(command.getCategoria(), command.getDesarrolloId());
+
         String archivoUrl = null;
 
         if ("foto".equals(command.getTipo())) {
@@ -71,7 +73,7 @@ public class CrearContenido {
                 .archivoUrl(archivoUrl)
                 .videoUrl("video".equals(command.getTipo()) ? command.getVideoUrl() : null)
                 .esPortada(esPortada)
-                .orden((short) 0)
+                .orden(contenidoMediaDomainService.resolverOrden(command.getCategoria()))
                 .enable(true)
                 .stampApp(stamp.getStampApp())
                 .stampUser(stamp.getStampUser())

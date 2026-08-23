@@ -2,7 +2,6 @@ package ar.com.solaresdedonato.api.adapter.in.model.request;
 
 import ar.com.solaresdedonato.api.core.command.ImportarContenidoDriveCommand;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -18,12 +17,12 @@ public class ImportarContenidoDesdeDriveRequest {
     @Size(max = 200, message = "El título no puede superar los 200 caracteres")
     private String titulo;
 
-    @NotNull(message = "El desarrollo es requerido")
+    /** Requerido para todas las categorías salvo 'hero' — ver ImportarContenidoDesdeDrive.execute. */
     private Long desarrolloId;
 
     @NotBlank(message = "La categoría es requerida")
     @Pattern(
-            regexp = "fachada|interior|amenities|obra|drone|institucional",
+            regexp = "fachada|interior|amenities|obra|drone|institucional|hero",
             message = "Categoría inválida")
     private String categoria;
 

@@ -9,6 +9,8 @@ public final class ErrorCodes {
     public static final String CONTENIDO_VIDEO_URL_REQUERIDO = "01003";
     public static final String CONTENIDO_TIPO_ARCHIVO_NO_PERMITIDO = "01004";
     public static final String CONTENIDO_ARCHIVO_DEMASIADO_GRANDE = "01005";
+    public static final String CONTENIDO_DESARROLLO_REQUERIDO = "01006";
+    public static final String CONTENIDO_HERO_ID_INVALIDO = "01007";
 
     // ========== NOT FOUND (01200-01399) ==========
     public static final String ENDPOINT_NO_ENCONTRADO = "01206";

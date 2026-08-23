@@ -4,7 +4,6 @@ import ar.com.solaresdedonato.api.core.command.ContenidoMediaCommand;
 import ar.com.solaresdedonato.api.core.constants.ErrorCodes;
 import ar.com.solaresdedonato.api.core.exception.BadRequestException;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -24,12 +23,13 @@ public class CrearContenidoRequest {
     @Size(max = 200, message = "El título no puede superar los 200 caracteres")
     private String titulo;
 
-    @NotNull(message = "El desarrollo es requerido")
+    /** Requerido para todas las categorías salvo 'hero' (imágenes del carrusel de
+     *  inicio, que no pertenecen a ningún desarrollo) — ver CrearContenido.execute. */
     private Long desarrolloId;
 
     @NotBlank(message = "La categoría es requerida")
     @Pattern(
-            regexp = "fachada|interior|amenities|obra|drone|institucional",
+            regexp = "fachada|interior|amenities|obra|drone|institucional|hero",
             message = "Categoría inválida")
     private String categoria;
 

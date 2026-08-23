@@ -11,6 +11,12 @@ import java.util.Optional;
 public interface ContenidoMediaRepositoryPort {
     List<ContenidoMedia> findByDesarrolloId(Long desarrolloId);
 
+    /** Imágenes del carrusel de inicio, en orden de carrusel. */
+    List<ContenidoMedia> findHeroHabilitadas();
+
+    /** Para asignarle el próximo orden a una hero nueva (se agrega al final). */
+    long countHeroHabilitadas();
+
     PageResult<ContenidoMedia> findByFiltro(Long desarrolloId, String tipo, String categoria, PageQuery pageQuery);
 
     Optional<ContenidoMedia> findById(Long id);

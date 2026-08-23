@@ -4,18 +4,23 @@ import ar.com.solaresdedonato.api.adapter.in.model.dto.ContenidoMediaDto;
 import ar.com.solaresdedonato.api.adapter.in.model.dto.PageDto;
 import ar.com.solaresdedonato.api.adapter.in.model.request.CrearContenidoRequest;
 import ar.com.solaresdedonato.api.adapter.in.model.request.ImportarContenidoDesdeDriveRequest;
+import ar.com.solaresdedonato.api.adapter.in.model.request.ReordenarHeroRequest;
 import ar.com.solaresdedonato.api.adapter.in.utils.StampUtils;
 import ar.com.solaresdedonato.api.core.ports.PageQuery;
 import ar.com.solaresdedonato.api.core.usecase.contenido.CrearContenido;
 import ar.com.solaresdedonato.api.core.usecase.contenido.EliminarContenido;
 import ar.com.solaresdedonato.api.core.usecase.contenido.ImportarContenidoDesdeDrive;
 import ar.com.solaresdedonato.api.core.usecase.contenido.ListarContenido;
+import ar.com.solaresdedonato.api.core.usecase.contenido.ListarHeroSlides;
+import ar.com.solaresdedonato.api.core.usecase.contenido.ReordenarHeroSlides;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/contenido")
@@ -26,6 +31,22 @@ public class ContenidoController {
     private final CrearContenido crearContenido;
     private final EliminarContenido eliminarContenido;
     private final ImportarContenidoDesdeDrive importarContenidoDesdeDrive;
+    private final ListarHeroSlides listarHeroSlides;
+    private final ReordenarHeroSlides reordenarHeroSlides;
+
+    // Antes que /v1/contenido/{id} (DELETE) por las dudas, aunque no colisionan al ser
+    // otro verbo — misma convención de orden que DesarrolloController.
+    @GetMapping("/hero")
+    public ResponseEntity<List<ContenidoMediaDto>> listarHero() {
+        var slides = listarHeroSlides.execute().stream().map(ContenidoMediaDto::fromDomain).toList();
+        return ResponseEntity.ok(slides);
+    }
+
+    @PutMapping("/hero/orden")
+    public ResponseEntity<List<ContenidoMediaDto>> reordenarHero(@Valid @RequestBody ReordenarHeroRequest request) {
+        var slides = reordenarHeroSlides.execute(request.getIds()).stream().map(ContenidoMediaDto::fromDomain).toList();
+        return ResponseEntity.ok(slides);
+    }
 
     @GetMapping
     public ResponseEntity<PageDto<ContenidoMediaDto>> listar(

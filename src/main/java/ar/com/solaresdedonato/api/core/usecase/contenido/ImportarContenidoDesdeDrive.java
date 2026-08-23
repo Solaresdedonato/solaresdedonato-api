@@ -52,6 +52,8 @@ public class ImportarContenidoDesdeDrive {
     private final ValidadorArchivoImagen validadorArchivoImagen;
 
     public ContenidoMedia execute(ImportarContenidoDriveCommand command, StampCommand stamp) {
+        ContenidoMediaDomainService.validarDesarrolloRequerido(command.getCategoria(), command.getDesarrolloId());
+
         contenidoMediaRepositoryPort.findByOrigenDriveFileId(command.getDriveFileId())
                 .ifPresent(existente -> {
                     throw new ConflictException(
@@ -99,7 +101,7 @@ public class ImportarContenidoDesdeDrive {
                 .videoUrl(videoUrl)
                 .origenDriveFileId(command.getDriveFileId())
                 .esPortada(esPortada)
-                .orden((short) 0)
+                .orden(contenidoMediaDomainService.resolverOrden(command.getCategoria()))
                 .enable(true)
                 .stampApp(stamp.getStampApp())
                 .stampUser(stamp.getStampUser())
