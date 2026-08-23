@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 
 import java.util.List;
 
@@ -54,6 +55,23 @@ public class DesarrolloRequest {
 
     private boolean publicar;
 
+    /** Enlaces opcionales de la ficha pública — ninguno es obligatorio. */
+    @URL(message = "La URL del showroom virtual no es válida")
+    @Size(max = 500)
+    private String showroomVirtualUrl;
+
+    @URL(message = "La URL del brochure/planos no es válida")
+    @Size(max = 500)
+    private String brochurePlanosUrl;
+
+    @URL(message = "La URL de avance de obra no es válida")
+    @Size(max = 500)
+    private String avanceObraUrl;
+
+    @URL(message = "La URL de solicitar información no es válida")
+    @Size(max = 500)
+    private String solicitarInformacionUrl;
+
     public DesarrolloCommand toCommand() {
         return DesarrolloCommand.builder()
                 .slug(this.slug)
@@ -67,6 +85,10 @@ public class DesarrolloRequest {
                 .instrumentoTokenizacion(this.instrumentoTokenizacion)
                 .instrumentoRentaFija(this.instrumentoRentaFija)
                 .publicar(this.publicar)
+                .showroomVirtualUrl(this.showroomVirtualUrl)
+                .brochurePlanosUrl(this.brochurePlanosUrl)
+                .avanceObraUrl(this.avanceObraUrl)
+                .solicitarInformacionUrl(this.solicitarInformacionUrl)
                 .build();
     }
 }

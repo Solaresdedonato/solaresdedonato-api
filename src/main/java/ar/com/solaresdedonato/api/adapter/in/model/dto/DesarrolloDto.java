@@ -25,6 +25,10 @@ public class DesarrolloDto {
     private boolean instrumentoRentaFija;
     private boolean publicado;
     private String imagenPortadaUrl;
+    private String showroomVirtualUrl;
+    private String brochurePlanosUrl;
+    private String avanceObraUrl;
+    private String solicitarInformacionUrl;
     /** Solo se completa en el detalle público por slug (GET /v1/desarrollo/{slug}). */
     private List<ContenidoMediaDto> galeria;
 
@@ -48,6 +52,10 @@ public class DesarrolloDto {
                 .instrumentoRentaFija(d.isInstrumentoRentaFija())
                 .publicado(d.isPublicado())
                 .imagenPortadaUrl(d.getImagenPortadaUrl())
+                .showroomVirtualUrl(d.getShowroomVirtualUrl())
+                .brochurePlanosUrl(d.getBrochurePlanosUrl())
+                .avanceObraUrl(d.getAvanceObraUrl())
+                .solicitarInformacionUrl(d.getSolicitarInformacionUrl())
                 .build();
     }
 }

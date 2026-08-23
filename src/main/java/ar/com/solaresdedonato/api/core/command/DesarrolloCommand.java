@@ -21,4 +21,8 @@ public class DesarrolloCommand {
     private final boolean instrumentoTokenizacion;
     private final boolean instrumentoRentaFija;
     private final boolean publicar;
+    private final String showroomVirtualUrl;
+    private final String brochurePlanosUrl;
+    private final String avanceObraUrl;
+    private final String solicitarInformacionUrl;
 }

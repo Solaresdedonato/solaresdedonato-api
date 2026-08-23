@@ -64,6 +64,18 @@ public class DesarrolloEntity {
     @Column(name = "imagen_portada_url", length = 500)
     private String imagenPortadaUrl;
 
+    @Column(name = "showroom_virtual_url", length = 500)
+    private String showroomVirtualUrl;
+
+    @Column(name = "brochure_planos_url", length = 500)
+    private String brochurePlanosUrl;
+
+    @Column(name = "avance_obra_url", length = 500)
+    private String avanceObraUrl;
+
+    @Column(name = "solicitar_informacion_url", length = 500)
+    private String solicitarInformacionUrl;
+
     @Column(name = "enable", nullable = false)
     private boolean enable;
 

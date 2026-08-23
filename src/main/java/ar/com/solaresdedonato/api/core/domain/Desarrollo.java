@@ -22,6 +22,10 @@ public class Desarrollo {
     private final boolean instrumentoRentaFija;
     private final boolean publicado;
     private final String imagenPortadaUrl;
+    private final String showroomVirtualUrl;
+    private final String brochurePlanosUrl;
+    private final String avanceObraUrl;
+    private final String solicitarInformacionUrl;
     private final boolean enable;
     private final String stampApp;
     private final String stampUser;
