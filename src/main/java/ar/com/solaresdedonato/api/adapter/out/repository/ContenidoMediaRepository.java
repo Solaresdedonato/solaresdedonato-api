@@ -73,8 +73,17 @@ public class ContenidoMediaRepository implements ContenidoMediaRepositoryPort {
     @Override
     public Map<String, Long> findContenidoMediaIdsPorDriveFileId(List<String> driveFileIds) {
         if (driveFileIds.isEmpty()) return Map.of();
+        // Un mismo drive_file_id puede tener más de una fila desde que se permite
+        // reusar la misma foto en varios destinos (ver V7__origen_drive_unico_por_destino.sql)
+        // -- Collectors.toMap de 2 argumentos tira IllegalStateException ante una clave
+        // repetida. El uso de este mapa es puramente informativo (badge "yaImportado" del
+        // picker), así que ante duplicados alcanza con quedarse con cualquiera; se toma el
+        // de id más alto (la importación más reciente) de forma determinística.
         return jpaRepository.findIdsPorOrigenDriveFileId(driveFileIds).stream()
-                .collect(Collectors.toMap(fila -> (String) fila[0], fila -> (Long) fila[1]));
+                .collect(Collectors.toMap(
+                        fila -> (String) fila[0],
+                        fila -> (Long) fila[1],
+                        (idExistente, idNuevo) -> Math.max(idExistente, idNuevo)));
     }
 
     @Override
