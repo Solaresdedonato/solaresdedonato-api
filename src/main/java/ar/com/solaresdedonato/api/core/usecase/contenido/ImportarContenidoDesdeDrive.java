@@ -79,10 +79,13 @@ public class ImportarContenidoDesdeDrive {
             validadorArchivoImagen.validarTamanioDeclarado(metadata.tamanioBytes());
 
             ArchivoDescargado descargado = archivoExternoPort.descargar(command.getDriveFileId(), validadorArchivoImagen.maxBytes());
-            validadorArchivoImagen.validar(descargado.nombre(), descargado.mimeType(), descargado.contenido());
+            // El título del archivo en Drive frecuentemente no conserva la extensión —
+            // ver Javadoc de asegurarExtension().
+            String nombre = validadorArchivoImagen.asegurarExtension(descargado.nombre(), descargado.mimeType());
+            validadorArchivoImagen.validar(nombre, descargado.mimeType(), descargado.contenido());
 
             String subfolder = command.getDesarrolloId() != null ? "desarrollo-" + command.getDesarrolloId() : "institucional";
-            archivoUrl = fileStoragePort.store(descargado.contenido(), descargado.nombre(), subfolder);
+            archivoUrl = fileStoragePort.store(descargado.contenido(), nombre, subfolder);
         } else {
             // video: nada se descarga ni se guarda en FileStoragePort, solo se linkea.
             videoUrl = archivoExternoPort.construirUrlReproduccion(command.getDriveFileId());

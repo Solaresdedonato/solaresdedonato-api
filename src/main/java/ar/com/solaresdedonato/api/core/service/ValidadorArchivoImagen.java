@@ -29,6 +29,11 @@ public class ValidadorArchivoImagen {
             Set.of("image/jpeg", "image/png", "image/webp", "image/avif");
     private static final Set<String> EXTENSIONES_PERMITIDAS =
             Set.of(".jpg", ".jpeg", ".png", ".webp", ".avif");
+    private static final Map<String, String> EXTENSION_POR_MIME = Map.of(
+            "image/jpeg", ".jpg",
+            "image/png", ".png",
+            "image/webp", ".webp",
+            "image/avif", ".avif");
 
     private final long maxBytes;
 
@@ -40,6 +45,27 @@ public class ValidadorArchivoImagen {
      *  tamaño ANTES de traer un solo byte, usando el mismo límite que después se re-valida acá. */
     public long maxBytes() {
         return maxBytes;
+    }
+
+    /** Si {@code nombreOriginal} no trae una extensión de la allow-list, la deriva del
+     *  {@code mimeType} en vez de rechazar directo — pensado para Drive, donde el título del
+     *  archivo (lo que llega acá como nombre) frecuentemente no conserva la extensión aunque
+     *  el archivo sí sea una imagen soportada. El {@code mimeType} en ese caso es el que
+     *  reporta la API de Drive, no algo que mande el cliente, así que confiar en él para
+     *  esto no abre una vía nueva de bypass: el content real todavía se re-valida por magic
+     *  number en {@link #validar}. No aplica al camino multipart, donde el nombre viene del
+     *  archivo local del usuario y ya trae su extensión real.
+     */
+    public String asegurarExtension(String nombreOriginal, String mimeType) {
+        if (nombreOriginal != null && EXTENSIONES_PERMITIDAS.contains(extensionDe(nombreOriginal))) {
+            return nombreOriginal;
+        }
+        String extension = EXTENSION_POR_MIME.get(mimeType);
+        if (extension == null) {
+            return nombreOriginal;
+        }
+        String base = (nombreOriginal == null || nombreOriginal.isBlank()) ? "archivo" : nombreOriginal;
+        return base + extension;
     }
 
     /** Rechazo temprano por el tamaño que reporta el origen (metadata de Drive), sin descargar nada. */
