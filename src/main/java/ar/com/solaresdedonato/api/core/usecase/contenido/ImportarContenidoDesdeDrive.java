@@ -54,10 +54,15 @@ public class ImportarContenidoDesdeDrive {
     public ContenidoMedia execute(ImportarContenidoDriveCommand command, StampCommand stamp) {
         ContenidoMediaDomainService.validarDesarrolloRequerido(command.getCategoria(), command.getDesarrolloId());
 
-        contenidoMediaRepositoryPort.findByOrigenDriveFileId(command.getDriveFileId())
+        // Acotado al destino (desarrolloId + categoria): la misma foto puede reusarse
+        // en otro desarrollo o en el hero, solo se bloquea reimportarla dos veces al
+        // mismo lugar. Ver V7__origen_drive_unico_por_destino.sql.
+        contenidoMediaRepositoryPort
+                .findByOrigenDriveFileIdAndDesarrolloIdAndCategoria(
+                        command.getDriveFileId(), command.getDesarrolloId(), command.getCategoria())
                 .ifPresent(existente -> {
                     throw new ConflictException(
-                            "Este archivo de Drive ya fue importado a la biblioteca",
+                            "Este archivo de Drive ya fue importado a este destino",
                             ErrorCodes.CONTENIDO_DRIVE_YA_IMPORTADO,
                             Map.of("contenidoMediaId", existente.getId()));
                 });

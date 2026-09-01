@@ -23,7 +23,11 @@ public interface ContenidoMediaRepositoryPort {
 
     Optional<ContenidoMedia> findPortadaByDesarrolloId(Long desarrolloId);
 
-    Optional<ContenidoMedia> findByOrigenDriveFileId(String driveFileId);
+    /** Idempotencia acotada al destino: la MISMA foto puede reusarse en otro
+     *  desarrollo o categoria (ej. hero + un desarrollo), pero no duplicarse dos
+     *  veces en el mismo destino. */
+    Optional<ContenidoMedia> findByOrigenDriveFileIdAndDesarrolloIdAndCategoria(
+            String driveFileId, Long desarrolloId, String categoria);
 
     /** De la lista de fileIds de Drive recibida, mapa fileId -> id del contenido_media ya
      *  importado (una sola consulta). Las claves ausentes son "no importado todavía". */

@@ -63,8 +63,11 @@ public class ContenidoMediaRepository implements ContenidoMediaRepositoryPort {
     }
 
     @Override
-    public Optional<ContenidoMedia> findByOrigenDriveFileId(String driveFileId) {
-        return jpaRepository.findByOrigenDriveFileIdAndEnableTrue(driveFileId).map(mapper::toDomain);
+    public Optional<ContenidoMedia> findByOrigenDriveFileIdAndDesarrolloIdAndCategoria(
+            String driveFileId, Long desarrolloId, String categoria) {
+        return jpaRepository
+                .findByOrigenDriveFileIdAndDesarrolloIdAndCategoriaAndEnableTrue(driveFileId, desarrolloId, categoria)
+                .map(mapper::toDomain);
     }
 
     @Override

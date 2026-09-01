@@ -45,8 +45,16 @@ public interface ContenidoMediaJpaRepository extends JpaRepository<ContenidoMedi
     @Query("SELECT c FROM ContenidoMediaEntity c WHERE c.desarrollo.id = :desarrolloId AND c.esPortada = true AND c.enable = true")
     Optional<ContenidoMediaEntity> findPortadaByDesarrolloId(@Param("desarrolloId") Long desarrolloId);
 
-    @Query("SELECT c FROM ContenidoMediaEntity c LEFT JOIN FETCH c.desarrollo WHERE c.origenDriveFileId = :driveFileId AND c.enable = true")
-    Optional<ContenidoMediaEntity> findByOrigenDriveFileIdAndEnableTrue(@Param("driveFileId") String driveFileId);
+    @Query("""
+            SELECT c FROM ContenidoMediaEntity c LEFT JOIN FETCH c.desarrollo
+            WHERE c.origenDriveFileId = :driveFileId
+              AND c.categoria = :categoria
+              AND c.enable = true
+              AND ((:desarrolloId IS NULL AND c.desarrollo IS NULL) OR c.desarrollo.id = :desarrolloId)
+            """)
+    Optional<ContenidoMediaEntity> findByOrigenDriveFileIdAndDesarrolloIdAndCategoriaAndEnableTrue(
+            @Param("driveFileId") String driveFileId, @Param("desarrolloId") Long desarrolloId,
+            @Param("categoria") String categoria);
 
     @Query("SELECT c.origenDriveFileId, c.id FROM ContenidoMediaEntity c " +
             "WHERE c.origenDriveFileId IN :driveFileIds AND c.enable = true")
