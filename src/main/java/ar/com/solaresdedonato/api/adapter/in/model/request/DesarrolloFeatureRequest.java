@@ -19,14 +19,16 @@ public class DesarrolloFeatureRequest {
     @NotBlank(message = "El título de la feature es requerido")
     private String titulo;
 
-    @NotBlank(message = "El texto de la feature es requerido")
+    /** Opcional: el desarrollo se puede crear con solo los datos generales. Se guarda como
+     *  "" (la tabla exige siempre 4 features, ver ck_desarrollo_features_shape) y la ficha
+     *  pública omite las que no tienen texto. */
     private String texto;
 
     public DesarrolloFeature toDomain() {
         return DesarrolloFeature.builder()
                 .clave(this.clave)
                 .titulo(this.titulo)
-                .texto(this.texto)
+                .texto(this.texto == null ? "" : this.texto)
                 .build();
     }
 }
