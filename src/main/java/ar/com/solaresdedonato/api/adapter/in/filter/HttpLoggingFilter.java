@@ -53,7 +53,10 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getRequestURI();
-        return path.startsWith("/actuator") || path.startsWith("/health");
+        // getRequestURI() incluye el context path (/solares-donato): se compara sin él.
+        String path = request.getRequestURI().substring(request.getContextPath().length());
+        // /media queda afuera porque ContentCachingResponseWrapper retendría la imagen entera
+        // en memoria antes de mandar el primer byte (y encima se convertiría a String para el log).
+        return path.startsWith("/actuator") || path.startsWith("/health") || path.startsWith("/media/");
     }
 }
